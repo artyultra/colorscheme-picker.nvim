@@ -14,7 +14,7 @@ function M.register_theme(name, theme_fn)
 end
 
 -- Apply a theme
-function M.apply_theme(name)
+function M.apply_theme(name, skip_save)
 	if not M.registered_themes[name] then
 		vim.notify("Theme '" .. name .. "' not found!", vim.log.levels.ERROR)
 		return false
@@ -36,6 +36,12 @@ function M.apply_theme(name)
 	-- Save the current theme name
 	vim.g.current_colorscheme = name
 	vim.g.colors_name = name
+
+	-- Persist the theme selection (unless explicitly skipped)
+	if not skip_save then
+		local persistence = require("colorscheme-picker.persistence")
+		persistence.save_theme(name)
+	end
 
 	return true
 end

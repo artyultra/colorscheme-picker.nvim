@@ -5,6 +5,8 @@ M.options = {
 	default_theme = nil,
 	enable_default_keymaps = true,
 	telescope = true,
+	persist_theme = true, -- NEW: Enable theme persistence
+	persist_path = vim.fn.stdpath("data") .. "/colorscheme-picker.json", -- NEW: Where to save
 }
 
 -- Setup configuration with user options

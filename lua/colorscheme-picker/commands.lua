@@ -1,4 +1,6 @@
 local themes = require("colorscheme-picker.themes")
+local persistence = require("colorscheme-picker.persistence")
+local config = require("colorscheme-picker.config")
 
 local M = {}
 
@@ -14,6 +16,14 @@ function M.setup()
 		for _, name in ipairs(available_themes) do
 			local marker = (themes.get_current_theme() == name) and " ●" or ""
 			print("  " .. name .. marker)
+		end
+
+		-- Show saved theme info
+		if config.get("persist_theme") then
+			local saved = persistence.load_saved_theme()
+			if saved then
+				print("\nSaved theme: " .. saved)
+			end
 		end
 	end, { desc = "List all available colorschemes" })
 
@@ -42,6 +52,27 @@ function M.setup()
 		end,
 		desc = "Apply a specific colorscheme",
 	})
+
+	-- NEW: Clear saved theme
+	vim.api.nvim_create_user_command("ColorschemeClearSaved", function()
+		persistence.clear_saved_theme()
+		vim.notify("Cleared saved colorscheme", vim.log.levels.INFO)
+	end, { desc = "Clear saved colorscheme preference" })
+
+	-- NEW: Show current saved theme
+	vim.api.nvim_create_user_command("ColorschemeShowSaved", function()
+		if not config.get("persist_theme") then
+			print("Theme persistence is disabled")
+			return
+		end
+
+		local saved = persistence.load_saved_theme()
+		if saved then
+			print("Saved theme: " .. saved)
+		else
+			print("No saved theme found")
+		end
+	end, { desc = "Show currently saved colorscheme" })
 end
 
 return M

@@ -4,6 +4,7 @@ local M = {}
 local config = require("colorscheme-picker.config")
 local themes = require("colorscheme-picker.themes")
 local commands = require("colorscheme-picker.commands")
+local persistence = require("colorscheme-picker.persistence")
 
 -- Re-export theme management functions
 M.register_theme = themes.register_theme
@@ -54,11 +55,24 @@ function M.setup(opts)
 		vim.keymap.set("n", "<leader>cl", "<cmd>ColorschemeList<cr>", { desc = "List colorschemes" })
 	end
 
-	-- Apply default theme if specified
-	local default_theme = config.get("default_theme")
-	if default_theme then
+	-- Determine which theme to apply on startup
+	local theme_to_apply = nil
+
+	-- Priority 1: User specified default_theme in config
+	if config.get("default_theme") then
+		theme_to_apply = config.get("default_theme")
+	-- Priority 2: Load last saved theme (if persistence is enabled)
+	elseif config.get("persist_theme") then
+		local saved_theme = persistence.load_saved_theme()
+		if saved_theme and themes.registered_themes[saved_theme] then
+			theme_to_apply = saved_theme
+		end
+	end
+
+	-- Apply the determined theme
+	if theme_to_apply then
 		vim.defer_fn(function()
-			themes.apply_theme(default_theme)
+			themes.apply_theme(theme_to_apply)
 		end, 0)
 	end
 end
