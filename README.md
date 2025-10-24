@@ -114,6 +114,8 @@ require("colorscheme-picker").setup({
 
 ## Adding Custom Themes
 
+See `custom_theme_template.lua` for a comprehensive template with all Vim highlight groups and detailed comments.
+
 **During setup:**
 ```lua
 require("colorscheme-picker").setup({
