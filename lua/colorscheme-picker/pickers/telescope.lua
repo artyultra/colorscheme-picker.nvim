@@ -25,9 +25,12 @@ function M.pick()
 	local available_themes = themes.get_themes()
 	local original_theme = themes.get_current_theme()
 
+	-- Track last previewed theme to avoid redundant applies
+	local last_previewed = nil
+
 	pickers
 		.new({}, {
-			prompt_title = "Colorscheme Picker (preview with ↑↓ or Ctrl-j/k)",
+			prompt_title = "Colorscheme Picker (live preview as you type)",
 			finder = finders.new_table({
 				results = available_themes,
 				entry_maker = function(entry)
@@ -57,67 +60,103 @@ function M.pick()
 				-- Live preview function
 				local function preview_current()
 					local selection = action_state.get_selected_entry()
-					if selection then
-						themes.apply_theme(selection.value, true) -- true = skip saving to disk during preview
+					if selection and selection.value ~= last_previewed then
+						themes.apply_theme(selection.value, true) -- true = skip saving
+						last_previewed = selection.value
 					end
 				end
 
-				-- Preview on movement (Ctrl-j and Ctrl-k)
-				map("i", "<C-j>", function()
-					actions.move_selection_next(prompt_bufnr)
-					preview_current()
-				end)
+				if config.get("telescope_live_preview") then
+					-- Override default movement actions to include preview
+					map("i", "<C-j>", function()
+						actions.move_selection_next(prompt_bufnr)
+						preview_current()
+					end)
 
-				map("i", "<C-k>", function()
-					actions.move_selection_previous(prompt_bufnr)
-					preview_current()
-				end)
+					map("i", "<C-k>", function()
+						actions.move_selection_previous(prompt_bufnr)
+						preview_current()
+					end)
 
-				map("n", "<C-j>", function()
-					actions.move_selection_next(prompt_bufnr)
-					preview_current()
-				end)
+					map("n", "<C-j>", function()
+						actions.move_selection_next(prompt_bufnr)
+						preview_current()
+					end)
 
-				map("n", "<C-k>", function()
-					actions.move_selection_previous(prompt_bufnr)
-					preview_current()
-				end)
+					map("n", "<C-k>", function()
+						actions.move_selection_previous(prompt_bufnr)
+						preview_current()
+					end)
 
-				-- Also preview on regular j/k in normal mode
-				map("n", "j", function()
-					actions.move_selection_next(prompt_bufnr)
-					preview_current()
-				end)
+					map("n", "j", function()
+						actions.move_selection_next(prompt_bufnr)
+						preview_current()
+					end)
 
-				map("n", "k", function()
-					actions.move_selection_previous(prompt_bufnr)
-					preview_current()
-				end)
+					map("n", "k", function()
+						actions.move_selection_previous(prompt_bufnr)
+						preview_current()
+					end)
 
-				-- Preview on arrow keys
-				map("i", "<Down>", function()
-					actions.move_selection_next(prompt_bufnr)
-					preview_current()
-				end)
+					map("i", "<Down>", function()
+						actions.move_selection_next(prompt_bufnr)
+						preview_current()
+					end)
 
-				map("i", "<Up>", function()
-					actions.move_selection_previous(prompt_bufnr)
-					preview_current()
-				end)
+					map("i", "<Up>", function()
+						actions.move_selection_previous(prompt_bufnr)
+						preview_current()
+					end)
 
-				map("n", "<Down>", function()
-					actions.move_selection_next(prompt_bufnr)
-					preview_current()
-				end)
+					map("n", "<Down>", function()
+						actions.move_selection_next(prompt_bufnr)
+						preview_current()
+					end)
 
-				map("n", "<Up>", function()
-					actions.move_selection_previous(prompt_bufnr)
-					preview_current()
-				end)
+					map("n", "<Up>", function()
+						actions.move_selection_previous(prompt_bufnr)
+						preview_current()
+					end)
 
-				-- Manual preview trigger (Ctrl-p)
-				map("i", "<C-p>", preview_current)
-				map("n", "<C-p>", preview_current)
+					-- Manual preview trigger
+					map("i", "<C-p>", preview_current)
+					map("n", "<C-p>", preview_current)
+
+					-- Set up autocmd to preview on cursor movement (this handles fuzzy filtering)
+					vim.api.nvim_create_autocmd("CursorMoved", {
+						buffer = prompt_bufnr,
+						callback = function()
+							preview_current()
+						end,
+					})
+
+					-- Also handle insert mode cursor movement
+					vim.api.nvim_create_autocmd("CursorMovedI", {
+						buffer = prompt_bufnr,
+						callback = function()
+							-- Small delay to let telescope update the selection
+							vim.defer_fn(function()
+								if vim.api.nvim_buf_is_valid(prompt_bufnr) then
+									preview_current()
+								end
+							end, 50)
+						end,
+					})
+				else
+					-- Without live preview, just manual preview with Ctrl-p
+					map("i", "<C-p>", function()
+						local selection = action_state.get_selected_entry()
+						if selection then
+							themes.apply_theme(selection.value, true)
+						end
+					end)
+					map("n", "<C-p>", function()
+						local selection = action_state.get_selected_entry()
+						if selection then
+							themes.apply_theme(selection.value, true)
+						end
+					end)
+				end
 
 				-- Restore original theme on cancel
 				local function restore_and_close()
