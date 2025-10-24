@@ -99,13 +99,63 @@ function M.load_builtin_themes()
 		end
 	end
 
-	-- Log results
-	if loaded_count > 0 then
-		vim.notify("Loaded " .. loaded_count .. " colorscheme(s)", vim.log.levels.INFO)
+	if #failed_themes > 0 then
+		vim.notify("Failed to load themes: " .. table.concat(failed_themes, ", "), vim.log.levels.WARN)
+	end
+end
+
+-- Load custom themes from user-specified directory
+function M.load_custom_themes()
+	local config = require("colorscheme-picker.config")
+
+	if config.get("custom_themes_path") == nil then
+		return
+	end
+
+	local custom_path = vim.fn.stdpath("config") .. config.get("custom_themes_path")
+
+	-- Skip if custom path is not configured
+	if not custom_path or custom_path == "" then
+		return
+	end
+
+	-- Expand path (handle ~ and environment variables)
+	custom_path = vim.fn.expand(custom_path)
+
+	-- Check if custom themes directory exists
+	if vim.fn.isdirectory(custom_path) == 0 then
+		-- Silently skip if directory doesn't exist (user may not have custom themes)
+		return
+	end
+
+	-- Get all .lua files in the custom themes directory
+	local theme_files = vim.fn.glob(custom_path .. "/*.lua", false, true)
+
+	if #theme_files == 0 then
+		return
+	end
+
+	local loaded_count = 0
+	local failed_themes = {}
+
+	-- Load each custom theme file
+	for _, file_path in ipairs(theme_files) do
+		-- Extract theme name from filename (remove .lua extension)
+		local theme_name = vim.fn.fnamemodify(file_path, ":t:r")
+
+		-- Try to load the theme file using dofile (since it's not in package path)
+		local ok, theme = pcall(dofile, file_path)
+
+		if ok and type(theme) == "function" then
+			M.register_theme(theme_name, theme)
+			loaded_count = loaded_count + 1
+		else
+			table.insert(failed_themes, theme_name)
+		end
 	end
 
 	if #failed_themes > 0 then
-		vim.notify("Failed to load themes: " .. table.concat(failed_themes, ", "), vim.log.levels.WARN)
+		vim.notify("Failed to load custom themes: " .. table.concat(failed_themes, ", "), vim.log.levels.WARN)
 	end
 end
 

@@ -7,6 +7,7 @@ M.options = {
 	telescope = true,
 	persist_theme = true, -- NEW: Enable theme persistence
 	persist_path = vim.fn.stdpath("data") .. "/colorscheme-picker.json", -- NEW: Where to save
+	custom_themes_path = nil,
 }
 
 -- Setup configuration with user options

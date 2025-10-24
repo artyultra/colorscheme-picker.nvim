@@ -32,6 +32,9 @@ function M.setup(opts)
 	-- Load built-in themes
 	themes.load_builtin_themes()
 
+	-- Load custom themes from configured directory
+	themes.load_custom_themes()
+
 	-- Register user-provided themes
 	if opts and opts.themes then
 		for name, theme in pairs(opts.themes) do
