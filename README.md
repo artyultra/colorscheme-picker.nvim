@@ -81,8 +81,8 @@ All options are optional. Defaults shown below:
 | `enable_default_keymaps` | `boolean` | `true`                                                     | Enable default keybindings                     |
 | `telescope`              | `boolean` | `true`                                                     | Enable telescope picker                        |
 | `persist_theme`          | `boolean` | `true`                                                     | Remember last selected theme                   |
-| `persist_path`           | `string`  | `vim.fn.stdpath("data") .. "/colorscheme-picker.json"`    | Where theme preference is saved                |
-| `custom_themes_path`     | `string`  | `vim.fn.stdpath("config") .. "/lua/custom/core/themes/"`  | Directory to load custom theme files from      |
+| `persist_path`           | `string`  | `/colorscheme-picker.json`                                 | Where theme preference is saved                |
+| `custom_themes_path`     | `string`  | `/lua/custom/core/themes/`                                 | Directory to load custom theme files from      |
 | `themes`                 | `table`   | `{}`                                                       | Custom themes (name = function)                |
 
 ### Examples
@@ -114,7 +114,7 @@ require("colorscheme-picker").setup({
 
 ## Adding Custom Themes
 
-See `custom_theme_template.lua` for a comprehensive template with all Vim highlight groups and detailed comments.
+See [custom_theme_template.lua](https://github.com/artyultra/colorscheme-picker.nvim/blob/main/custom_theme_template.lua) for a comprehensive template with all Vim highlight groups and detailed comments.
 
 **During setup:**
 ```lua
