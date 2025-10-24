@@ -1,6 +1,7 @@
 -- Catppuccin Mocha colorscheme for Neovim
 -- Reference: https://github.com/catppuccin/catppuccin
 
+return function()
 local colors = {
 	-- Darkvoid base colors
 	fg = "#c0c0c0",
@@ -242,3 +243,4 @@ vim.g.terminal_color_15 = colors.string
 
 -- Set colorscheme name
 vim.g.colors_name = "catppuccin-mocha-darkvoid"
+end

@@ -260,7 +260,7 @@ end
 
 -- Load built-in themes
 function M.load_builtin_themes()
-	local builtin_themes = { "dark-void", "muted-catppuccin", "rose-pine" }
+	local builtin_themes = { "dark-void", "catppuccin-mocha", "rose-pine" }
 
 	for _, theme_name in ipairs(builtin_themes) do
 		local ok, theme = pcall(require, "colorscheme-picker.themes." .. theme_name)
