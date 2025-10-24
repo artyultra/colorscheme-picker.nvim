@@ -2,173 +2,191 @@
 -- Reference: https://github.com/catppuccin/catppuccin
 
 local colors = {
-	-- Base colors
-	rosewater = "#f5e0dc",
-	flamingo = "#f2cdcd",
-	pink = "#f5c2e7",
-	mauve = "#cba6f7",
-	red = "#f38ba8",
-	maroon = "#eba0ac",
-	peach = "#fab387",
-	yellow = "#f9e2af",
-	green = "#a6e3a1",
-	teal = "#94e2d5",
-	sky = "#89dceb",
-	sapphire = "#74c7ec",
-	blue = "#89b4fa",
-	lavender = "#b4befe",
+	-- Darkvoid base colors
+	fg = "#c0c0c0",
+	bg = "#1c1c1c",
+	cursor = "#bdfe58",
+	line_nr = "#404040",
+	visual = "#303030",
+	comment = "#585858",
+	string = "#d1d1d1",
+	func = "#e1e1e1",
+	kw = "#f1f1f1",
+	identifier = "#b1b1b1",
+	type = "#a1a1a1",
+	type_builtin = "#c5c5c5",
+	search_highlight = "#1bfd9c",
+	operator = "#1bfd9c",
+	bracket = "#e6e6e6",
+	preprocessor = "#6a7a8a",
+	bool = "#66b2b2",
+	constant = "#b2d8d8",
 
-	-- Neutral colors
-	text = "#cdd6f4",
-	subtext1 = "#bac2de",
-	subtext0 = "#a6adc8",
-	overlay2 = "#9399b2",
-	overlay1 = "#7f849c",
-	overlay0 = "#6c7086",
-	surface2 = "#585b70",
-	surface1 = "#45475a",
-	surface0 = "#313244",
+	-- Darkvoid git colors
+	added = "#baffc9",
+	changed = "#ffffba",
+	removed = "#ffb3ba",
 
-	-- Base backgrounds
-	base = "#1e1e2e",
-	mantle = "#181825",
-	crust = "#11111b",
+	-- Darkvoid UI colors
+	pmenu_bg = "#1c1c1c",
+	pmenu_sel_bg = "#1bfd9c",
+	pmenu_fg = "#c0c0c0",
+	eob = "#3c3c3c",
+	border = "#585858",
+	title = "#bdfe58",
+
+	-- Darkvoid LSP diagnostic colors
+	error = "#dea6a0",
+	warning = "#d6efd8",
+	hint = "#bedc74",
+	info = "#7fa1c3",
 }
+
 local highlights = {
 	-- Editor UI
-	Normal = { fg = colors.text, bg = "NONE" },
-	NormalFloat = { fg = colors.text, bg = colors.mantle },
-	FloatBorder = { fg = colors.blue },
-	Visual = { bg = colors.surface1, style = "bold" },
-	VisualNOS = { bg = colors.surface1 },
-	LineNr = { fg = colors.blue },
-	CursorLineNr = { fg = colors.rosewater },
+	Normal = { fg = colors.fg, bg = "NONE" },
+	NormalFloat = { fg = colors.fg, bg = colors.bg },
+	FloatBorder = { fg = colors.border },
+	Visual = { bg = colors.visual, style = "bold" },
+	VisualNOS = { bg = colors.visual },
+	LineNr = { fg = colors.line_nr },
+	CursorLineNr = { fg = colors.cursor },
 	CursorLine = { bg = "NONE" },
-	CursorColumn = { bg = colors.surface0 },
+	CursorColumn = { bg = colors.visual },
 	SignColumn = { bg = "NONE" },
-	ColorColumn = { bg = colors.surface0 },
-	Whitespace = { fg = colors.surface2 },
-	VertSplit = { fg = colors.crust },
-	WinSeparator = { fg = colors.crust },
+	ColorColumn = { bg = colors.visual },
+	Whitespace = { fg = colors.comment },
+	VertSplit = { fg = colors.border },
+	WinSeparator = { fg = colors.border },
 
 	-- Syntax highlighting
-	Comment = { fg = colors.overlay2, style = "italic" },
-	Constant = { fg = colors.peach },
-	String = { fg = colors.green },
-	Character = { fg = colors.teal },
-	Number = { fg = colors.peach },
-	Boolean = { fg = colors.peach },
-	Float = { fg = colors.peach },
+	Comment = { fg = colors.comment, style = "italic" },
+	Constant = { fg = colors.constant },
+	String = { fg = colors.string },
+	Character = { fg = colors.string },
+	Number = { fg = colors.constant },
+	Boolean = { fg = colors.bool },
+	Float = { fg = colors.constant },
 
-	Identifier = { fg = colors.flamingo },
-	Function = { fg = colors.blue, style = "italic" },
-	Statement = { fg = colors.mauve },
-	Conditional = { fg = colors.mauve },
-	Repeat = { fg = colors.mauve },
-	Label = { fg = colors.sapphire },
-	Operator = { fg = colors.sky },
-	Keyword = { fg = colors.mauve },
-	Exception = { fg = colors.peach },
+	Identifier = { fg = colors.identifier },
+	Function = { fg = colors.func, style = "italic" },
+	Statement = { fg = colors.kw },
+	Conditional = { fg = colors.kw },
+	Repeat = { fg = colors.kw },
+	Label = { fg = colors.kw },
+	Operator = { fg = colors.operator },
+	Keyword = { fg = colors.kw },
+	Exception = { fg = colors.kw },
 
-	PreProc = { fg = colors.pink },
-	Include = { fg = colors.pink },
-	Define = { fg = colors.pink },
-	Macro = { fg = colors.pink },
-	PreCondit = { fg = colors.pink },
+	PreProc = { fg = colors.preprocessor },
+	Include = { fg = colors.preprocessor },
+	Define = { fg = colors.preprocessor },
+	Macro = { fg = colors.preprocessor },
+	PreCondit = { fg = colors.preprocessor },
 
-	Type = { fg = colors.yellow },
-	StorageClass = { fg = colors.yellow },
-	Structure = { fg = colors.yellow },
-	Typedef = { fg = colors.yellow },
+	Type = { fg = colors.type },
+	StorageClass = { fg = colors.type },
+	Structure = { fg = colors.type },
+	Typedef = { fg = colors.type },
 
-	Special = { fg = colors.pink },
-	SpecialChar = { fg = colors.pink },
-	Tag = { fg = colors.mauve },
-	Delimiter = { fg = colors.overlay2 },
-	SpecialComment = { fg = colors.overlay0, style = "italic" },
-	Debug = { fg = colors.peach },
+	Special = { fg = colors.bracket },
+	SpecialChar = { fg = colors.bracket },
+	Tag = { fg = colors.kw },
+	Delimiter = { fg = colors.bracket },
+	SpecialComment = { fg = colors.comment, style = "italic" },
+	Debug = { fg = colors.constant },
 
 	-- Underlined text
 	Underlined = { style = "underline" },
 
 	-- Error handling
-	Error = { fg = colors.red },
-	Todo = { fg = colors.base, bg = colors.yellow, style = "bold" },
+	Error = { fg = colors.error },
+	Todo = { fg = colors.bg, bg = colors.warning, style = "bold" },
 
 	-- Popup menus
-	Pmenu = { fg = colors.overlay2, bg = colors.surface0 },
-	PmenuSel = { fg = colors.text, bg = colors.surface1, style = "bold" },
-	PmenuSbar = { bg = colors.surface1 },
-	PmenuThumb = { bg = colors.overlay0 },
+	Pmenu = { fg = colors.pmenu_fg, bg = colors.pmenu_bg },
+	PmenuSel = { fg = colors.pmenu_bg, bg = colors.pmenu_sel_bg, style = "bold" },
+	PmenuSbar = { bg = colors.visual },
+	PmenuThumb = { bg = colors.line_nr },
 
 	-- Search
-	Search = { fg = colors.base, bg = colors.sky },
-	IncSearch = { fg = colors.base, bg = colors.rosewater },
-	CurSearch = { fg = colors.base, bg = colors.red },
+	Search = { fg = colors.search_highlight, bg = "NONE", style = "bold" },
+	IncSearch = { fg = colors.search_highlight, bg = "NONE", style = "bold" },
+	CurSearch = { fg = colors.search_highlight, bg = "NONE", style = "bold" },
 
 	-- Messages and prompts
-	ErrorMsg = { fg = colors.red, style = "bold,italic" },
-	WarningMsg = { fg = colors.yellow },
-	MoreMsg = { fg = colors.blue },
-	ModeMsg = { fg = colors.text, style = "bold" },
-	Question = { fg = colors.blue },
+	ErrorMsg = { fg = colors.error, style = "bold,italic" },
+	WarningMsg = { fg = colors.warning },
+	MoreMsg = { fg = colors.info },
+	ModeMsg = { fg = colors.fg, style = "bold" },
+	Question = { fg = colors.info },
 
 	-- Diagnostics (LSP)
-	DiagnosticError = { fg = colors.red },
-	DiagnosticWarn = { fg = colors.yellow },
-	DiagnosticInfo = { fg = colors.sky },
-	DiagnosticHint = { fg = colors.teal },
-	DiagnosticUnderlineError = { sp = colors.red, style = "undercurl" },
-	DiagnosticUnderlineWarn = { sp = colors.yellow, style = "undercurl" },
-	DiagnosticUnderlineInfo = { sp = colors.sky, style = "undercurl" },
-	DiagnosticUnderlineHint = { sp = colors.teal, style = "undercurl" },
+	DiagnosticError = { fg = colors.error },
+	DiagnosticWarn = { fg = colors.warning },
+	DiagnosticInfo = { fg = colors.info },
+	DiagnosticHint = { fg = colors.hint },
+	DiagnosticUnderlineError = { sp = colors.error, style = "underline" },
+	DiagnosticUnderlineWarn = { sp = colors.warning, style = "underline" },
+	DiagnosticUnderlineInfo = { sp = colors.info, style = "underline" },
+	DiagnosticUnderlineHint = { sp = colors.hint, style = "underline" },
+	DiagnosticVirtualTextError = { fg = colors.error },
+	DiagnosticVirtualTextWarn = { fg = colors.warning },
+	DiagnosticVirtualTextHint = { fg = colors.hint },
+	DiagnosticVirtualTextInfo = { fg = colors.info },
 
 	-- Status line
-	StatusLine = { fg = colors.text, bg = "NONE" },
-	StatusLineNC = { fg = colors.text, bg = "NONE" },
+	StatusLine = { fg = colors.fg, bg = "NONE" },
+	StatusLineNC = { fg = colors.fg, bg = "NONE" },
 
 	-- Tab line
-	TabLine = { fg = colors.surface1, bg = colors.mantle },
-	TabLineSel = { fg = colors.green, bg = colors.surface1 },
-	TabLineFill = { bg = colors.mantle },
+	TabLine = { fg = colors.comment, bg = colors.bg },
+	TabLineSel = { fg = colors.search_highlight, bg = colors.visual },
+	TabLineFill = { bg = colors.bg },
 
 	-- Window
-	WinBar = { fg = colors.rosewater },
-	WinBarNC = { fg = colors.overlay1 },
+	WinBar = { fg = colors.cursor },
+	WinBarNC = { fg = colors.comment },
 
 	-- Git diff
-	DiffAdd = { fg = colors.green },
-	DiffChange = { fg = colors.yellow },
-	DiffDelete = { fg = colors.red },
-	DiffText = { fg = colors.blue },
-	GitSignsAdd = { fg = colors.green },
-	GitSignsChange = { fg = colors.yellow },
-	GitSignsDelete = { fg = colors.red },
+	DiffAdd = { fg = colors.added },
+	DiffChange = { fg = colors.changed },
+	DiffDelete = { fg = colors.removed },
+	DiffText = { fg = colors.info },
+	GitSignsAdd = { fg = colors.added },
+	GitSignsChange = { fg = colors.changed },
+	GitSignsDelete = { fg = colors.removed },
 
 	-- Folding
-	Folded = { fg = colors.blue, bg = colors.surface0 },
-	FoldColumn = { fg = colors.overlay0, bg = colors.base },
+	Folded = { fg = colors.info, bg = colors.visual },
+	FoldColumn = { fg = colors.line_nr, bg = colors.bg },
 
 	-- Misc
-	MatchParen = { fg = colors.peach, style = "bold" },
-	NonText = { fg = colors.overlay0 },
-	SpecialKey = { fg = colors.overlay0 },
-	WildMenu = { fg = colors.text, bg = colors.surface0 },
-	Directory = { fg = colors.blue },
-	Title = { fg = colors.blue, style = "bold" },
-	Conceal = { fg = colors.overlay1 },
+	MatchParen = { fg = colors.constant, style = "bold" },
+	NonText = { fg = colors.line_nr },
+	SpecialKey = { fg = colors.line_nr },
+	WildMenu = { fg = colors.fg, bg = colors.visual },
+	Directory = { fg = colors.info },
+	Title = { fg = colors.title, style = "bold" },
+	Conceal = { fg = colors.comment },
 
 	-- Spell checking
-	SpellBad = { sp = colors.red, style = "undercurl" },
-	SpellCap = { sp = colors.yellow, style = "undercurl" },
-	SpellLocal = { sp = colors.blue, style = "undercurl" },
-	SpellRare = { sp = colors.green, style = "undercurl" },
+	SpellBad = { sp = colors.error, style = "undercurl" },
+	SpellCap = { sp = colors.warning, style = "undercurl" },
+	SpellLocal = { sp = colors.info, style = "undercurl" },
+	SpellRare = { sp = colors.hint, style = "undercurl" },
 
 	-- Quickfix
-	QuickFixLine = { bg = colors.surface1, style = "bold" },
+	QuickFixLine = { bg = colors.visual, style = "bold" },
 
 	-- Terminal
-	Terminal = { fg = colors.text, bg = colors.base },
+	Terminal = { fg = colors.fg, bg = colors.bg },
+
+	-- EndOfBuffer
+	EndOfBuffer = { fg = colors.eob, bg = "NONE" },
+
+	-- Cursor
+	Cursor = { fg = colors.cursor, bg = "NONE" },
 }
 
 -- Apply highlights
@@ -204,23 +222,23 @@ for group, settings in pairs(highlights) do
 	vim.api.nvim_set_hl(0, group, gui_settings)
 end
 
--- Terminal colors
-vim.g.terminal_color_0 = colors.surface1
-vim.g.terminal_color_1 = colors.red
-vim.g.terminal_color_2 = colors.green
-vim.g.terminal_color_3 = colors.yellow
-vim.g.terminal_color_4 = colors.blue
-vim.g.terminal_color_5 = colors.pink
-vim.g.terminal_color_6 = colors.teal
-vim.g.terminal_color_7 = colors.subtext1
-vim.g.terminal_color_8 = colors.surface2
-vim.g.terminal_color_9 = colors.red
-vim.g.terminal_color_10 = colors.green
-vim.g.terminal_color_11 = colors.yellow
-vim.g.terminal_color_12 = colors.blue
-vim.g.terminal_color_13 = colors.pink
-vim.g.terminal_color_14 = colors.teal
-vim.g.terminal_color_15 = colors.subtext0
+-- Terminal colors (using darkvoid palette)
+vim.g.terminal_color_0 = colors.bg
+vim.g.terminal_color_1 = colors.error
+vim.g.terminal_color_2 = colors.added
+vim.g.terminal_color_3 = colors.changed
+vim.g.terminal_color_4 = colors.info
+vim.g.terminal_color_5 = colors.kw
+vim.g.terminal_color_6 = colors.operator
+vim.g.terminal_color_7 = colors.fg
+vim.g.terminal_color_8 = colors.comment
+vim.g.terminal_color_9 = colors.removed
+vim.g.terminal_color_10 = colors.hint
+vim.g.terminal_color_11 = colors.warning
+vim.g.terminal_color_12 = colors.func
+vim.g.terminal_color_13 = colors.preprocessor
+vim.g.terminal_color_14 = colors.search_highlight
+vim.g.terminal_color_15 = colors.string
 
 -- Set colorscheme name
-vim.g.colors_name = "catppuccin-mocha"
+vim.g.colors_name = "catppuccin-mocha-darkvoid"
