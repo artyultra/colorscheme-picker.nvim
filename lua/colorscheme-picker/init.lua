@@ -48,7 +48,7 @@ function M.setup(opts)
 		vim.keymap.set("n", "<leader>cp", "<cmd>ColorschemePreview<cr>", { desc = "Preview colorschemes" })
 		vim.keymap.set(
 			"n",
-			"<leader>ct",
+			"<leader>th",
 			"<cmd>ColorschemePickerTelescope<cr>",
 			{ desc = "Telescope colorscheme picker" }
 		)
