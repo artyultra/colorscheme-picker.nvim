@@ -167,7 +167,6 @@ function M.pick()
 					end
 				end
 
-				map("i", "<Esc>", restore_and_close)
 				map("n", "<Esc>", restore_and_close)
 				map("n", "q", restore_and_close)
 
